@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Contas de Água</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .active-tab {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .bill-card {
+            transition: all 0.3s ease;
+        }
+        .bill-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .paid-badge {
+            background-color: #10b981;
+        }
+        .unpaid-badge {
+            background-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-tint text-blue-500 text-2xl"></i>
+                    <h1 class="text-xl font-bold text-gray-800">SUPAG</h1>
+                </div>
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#" class="px-4 py-2 rounded-md hover:bg-gray-100 active-tab" id="home-tab">
+                        <i class="fas fa-home mr-2"></i>Início
+                    </a>
+                    <a href="#" class="px-4 py-2 rounded-md hover:bg-gray-100" id="transactions-tab">
+                        <i class="fas fa-exchange-alt mr-2"></i>Transações
+                    </a>
+                    <a href="#" class="px-4 py-2 rounded-md hover:bg-gray-100" id="unpaid-tab">
+                        <i class="fas fa-exclamation-circle mr-2"></i>Contas a Pagar
+                    </a>
+                    <a href="#" class="px-4 py-2 rounded-md hover:bg-gray-100" id="paid-tab">
+                        <i class="fas fa-check-circle mr-2"></i>Contas Pagas
+                    </a>
+                    <a href="#" class="px-4 py-2 rounded-md hover:bg-gray-100" id="profile-tab">
+                        <i class="fas fa-user mr-2"></i>Perfil
+                    </a>
+                </nav>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Dashboard Summary -->
+        <section id="home-section" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Contas a Pagar</p>
+                            <h3 class="text-2xl font-bold text-gray-800">R$ 85,90</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-red-100 text-red-600">
+                            <i class="fas fa-exclamation-circle text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Contas Pagas</p>
+                            <h3 class="text-2xl font-bold text-gray-800">R$ 245,70</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500">Próximo Vencimento</p>
+                            <h3 class="text-2xl font-bold text-gray-800">15/06/2025</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-calendar-alt text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold text-gray-800">Minhas Contas Recentes</h2>
+                </div>
+                <div class="divide-y">
+                    <!-- Unpaid Bill -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Companhia de Água Municipal</h3>
+                                    <p class="text-sm text-gray-500">Vencimento: 15/06/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold unpaid-badge text-white">A Pagar</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 85,90</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paid Bill -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Água & Saneamento Ltda</h3>
+                                    <p class="text-sm text-gray-500">Pago em: 10/06/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold paid-badge text-white">Pago</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 78,45</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transactions Section (Hidden by default) -->
+        <section id="transactions-section" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold text-gray-800">Histórico de Transações</h2>
+                </div>
+                <div class="divide-y">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                    <i class="fas fa-check-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Pagamento de Conta</h3>
+                                    <p class="text-sm text-gray-500">Água & Saneamento Ltda - 10/06/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-gray-800">- R$ 78,45</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                    <i class="fas fa-check-circle text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Pagamento de Conta</h3>
+                                    <p class="text-sm text-gray-500">Companhia de Água Municipal - 15/05/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-gray-800">- R$ 82,10</p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Unpaid Bills Section (Hidden by default) -->
+        <section id="unpaid-section" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 border-b flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-gray-800">Contas a Pagar</h2>
+                    
+                </div>
+                <div class="divide-y">
+                    <!-- Unpaid Bill Example -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Companhia de Água Municipal</h3>
+                                    <p class="text-sm text-gray-500">Vencimento: 15/06/2025</p>
+                                    <p class="text-sm text-gray-500">Referência: Jun/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold unpaid-badge text-white">A Pagar</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 85,90</p>
+                                <button class="mt-2 px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">
+                                    <i class="fas fa-money-bill-wave mr-1"></i>Pagar Agora
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Paid Bills Section (Hidden by default) -->
+        <section id="paid-section" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold text-gray-800">Contas Pagas</h2>
+                </div>
+                <div class="divide-y">
+                    <!-- Paid Bill Example 1 -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Água & Saneamento Ltda</h3>
+                                    <p class="text-sm text-gray-500">Pago em: 10/06/2025</p>
+                                    <p class="text-sm text-gray-500">Referência: Mai/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold paid-badge text-white">Pago</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 78,45</p>
+                                <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300">
+                                    <i class="fas fa-receipt mr-1"></i>Ver Recibo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paid Bill Example 2 -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Companhia de Água Municipal</h3>
+                                    <p class="text-sm text-gray-500">Pago em: 15/05/2025</p>
+                                    <p class="text-sm text-gray-500">Referência: Abr/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold paid-badge text-white">Pago</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 82,10</p>
+                                <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300">
+                                    <i class="fas fa-receipt mr-1"></i>Ver Recibo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paid Bill Example 3 -->
+                    <div class="bill-card p-4 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-tint text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800">Água Pura Distribuidora</h3>
+                                    <p class="text-sm text-gray-500">Pago em: 12/04/2025</p>
+                                    <p class="text-sm text-gray-500">Referência: Mar/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold paid-badge text-white">Pago</span>
+                                <p class="font-bold text-gray-800 mt-1">R$ 85,15</p>
+                                <button class="mt-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300">
+                                    <i class="fas fa-receipt mr-1"></i>Ver Recibo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section (Hidden by default) -->
+        <section id="profile-section" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold text-gray-800">Meu Perfil</h2>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center space-x-6 mb-6">
+                        <div class="relative">
+                            <img src="C:\Users\etec3\Music\site\3106921.png" alt="Profile" class="w-20 h-20 rounded-full object-cover">
+                            <button class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full hover:bg-blue-600">
+                                <i class="fas fa-camera text-xs"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Usuario_nome</h3>
+                            <p class="text-gray-600">usuario.exemplo@email.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-gray-700 mb-2">Informações Pessoais</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">CPF</p>
+                                    <p class="font-medium">123.456.789-00</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Telefone</p>
+                                    <p class="font-medium">(11) 98765-4321</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Data de Nascimento</p>
+                                    <p class="font-medium">15/03/2000</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-700 mb-2">Endereço</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Endereço</p>
+                                    <p class="font-medium">Rua das Flores, 123</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Complemento</p>
+                                    <p class="font-medium">Apto 101</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Cidade/Estado</p>
+                                    <p class="font-medium">São Paulo/SP</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end">
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                            <i class="fas fa-edit mr-2"></i>Editar Perfil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Payment Section (Hidden by default) -->
+<!-- Payment Section (Atualizada com formulários) -->
+<section id="payment-section" class="tab-content hidden">
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-4 border-b">
+      <h2 class="text-lg font-semibold text-gray-800">Escolher Método de Pagamento</h2>
+    </div>
+    <div class="p-6 space-y-4">
+      <!-- Escolha o método -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button onclick="showPaymentForm('pix')" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+          <i class="fas fa-qrcode mr-2"></i> Pix
+        </button>
+        <button onclick="showPaymentForm('cartao')" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+          <i class="fas fa-credit-card mr-2"></i> Cartão de Crédito
+        </button>
+        <button onclick="showPaymentForm('qrcode')" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+          <i class="fas fa-barcode mr-2"></i> QR Code
+        </button>
+      </div>
+
+      <!-- Formulário PIX -->
+<div id="form-pix" class="hidden space-y-2 mt-4">
+  <label class="block text-sm font-medium text-gray-700">Código Pix:</label>
+  <div class="flex items-center space-x-2">
+    <input type="text" id="pix-code" readonly class="w-full p-2 border rounded-md bg-gray-100 font-mono text-sm">
+    <button onclick="copyPixCode()" class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
+      Copiar
+    </button>
+  </div>
+  <button onclick="submitPayment('Pix')" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 mt-2">
+    Confirmar Pagamento via Pix
+  </button>
+</div>
+
+
+      
+     <!-- Formulário Cartão -->
+<div id="form-cartao" class="hidden space-y-2 mt-4">
+  <label class="block text-sm font-medium text-gray-700">Número do Cartão:</label>
+  <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" class="block w-full p-2 border rounded-md">
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Validade:</label>
+      <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" class="block w-full p-2 border rounded-md">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">CVV:</label>
+      <input type="text" id="card-cvv" placeholder="123" maxlength="3" class="block w-full p-2 border rounded-md">
+    </div>
+  </div>
+  <button onclick="submitPayment('Cartão')" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 mt-2">
+    Confirmar Pagamento via Cartão
+  </button>
+</div>
+
+
+      <!-- Formulário QR Code -->
+      <div id="form-qrcode" class="hidden text-center space-y-4">
+        <p class="text-gray-600 mt-4">Escaneie o QR Code abaixo com seu aplicativo bancário:</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=PagamentoFakeSUPAG&size=200x200" alt="QR Code Fake" class="mx-auto">
+        <button id="btn-confirm-qr" onclick="submitPayment('QR Code')" class="hidden px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+          Pagamento Concluído
+        </button>
+      </div>
+
+      <!-- Voltar -->
+      <div class="text-right mt-8">
+        <button onclick="goBackToUnpaid()" class="text-sm text-gray-500 hover:underline">← Voltar para Contas a Pagar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <i class="fas fa-tint text-blue-500 text-xl"></i>
+                    <span class="font-bold text-gray-700">SUPAG</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-500">Termos de Serviço</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-500">Política de Privacidade</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-500">Contato</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center md:text-left text-gray-500 text-sm">
+                © 2025 SUPAG. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching functionality
+        const tabs = {
+            'home-tab': 'home-section',
+            'transactions-tab': 'transactions-section',
+            'unpaid-tab': 'unpaid-section',
+            'paid-tab': 'paid-section',
+            'profile-tab': 'profile-section'
+        };
+
+        // Add click event listeners to all tabs
+        Object.keys(tabs).forEach(tabId => {
+            document.getElementById(tabId).addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('nav a').forEach(tab => {
+                    tab.classList.remove('active-tab');
+                });
+                
+                // Show selected tab content
+                document.getElementById(tabs[tabId]).classList.remove('hidden');
+                
+                // Add active class to selected tab
+                this.classList.add('active-tab');
+            });
+        });
+
+        // Simulate bill payment
+        document.querySelectorAll('[onclick="payBill(this)"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.bill-card');
+                const badge = card.querySelector('.badge');
+                const amount = card.querySelector('.amount');
+                
+                badge.classList.remove('bg-red-100', 'text-red-600');
+                badge.classList.add('bg-green-100', 'text-green-600');
+                badge.textContent = 'Pago';
+                
+                this.classList.remove('bg-red-500', 'hover:bg-red-600');
+                this.classList.add('bg-gray-300', 'hover:bg-gray-400');
+                this.textContent = 'Recibo';
+                this.innerHTML = '<i class="fas fa-receipt mr-1"></i> Recibo';
+                
+                // You could add AJAX here to actually process the payment
+                setTimeout(() => {
+                    alert('Conta paga com sucesso!');
+                }, 500);
+            });
+        });
+        // Mostrar aba de pagamento ao clicar no botão "Pagar Agora"
+document.querySelectorAll('.bill-card button').forEach(button => {
+    button.addEventListener('click', function () {
+        // Esconde todas as abas
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+        });
+        // Mostra a aba de pagamento
+        document.getElementById('payment-section').classList.remove('hidden');
+        // Remove destaque de abas no topo
+        document.querySelectorAll('nav a').forEach(tab => {
+            tab.classList.remove('active-tab');
+        });
+    });
+});
+
+// Função para voltar para a aba de Contas a Pagar
+function goBackToUnpaid() {
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    document.getElementById('unpaid-section').classList.remove('hidden');
+
+    // Atualiza a aba ativa no menu
+    document.querySelectorAll('nav a').forEach(tab => {
+        tab.classList.remove('active-tab');
+    });
+    document.getElementById('unpaid-tab').classList.add('active-tab');
+}
+
+
+    </script>
+    <script>
+    // Função para simular o pagamento
+    function simulatePayment(method) {
+        // Simula "processando"
+        alert(`Processando pagamento via ${method}...`);
+
+        // Espera 1 segundo e mostra sucesso
+        setTimeout(() => {
+            alert(`Pagamento via ${method} realizado com sucesso!`);
+
+            // Atualiza a interface (poderia simular uma movimentação real)
+            moveToPaidSection();
+
+            // Volta para a aba de "Contas Pagas"
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById('paid-section').classList.remove('hidden');
+
+            // Atualiza o destaque da aba
+            document.querySelectorAll('nav a').forEach(tab => tab.classList.remove('active-tab'));
+            document.getElementById('paid-tab').classList.add('active-tab');
+        }, 1000);
+    }
+
+    // Função que simula mover a conta para a aba de contas pagas
+    function moveToPaidSection() {
+        const unpaidCard = document.querySelector('#unpaid-section .bill-card');
+        if (unpaidCard) {
+            const clone = unpaidCard.cloneNode(true);
+            const paidSection = document.querySelector('#paid-section .divide-y');
+
+            // Atualiza texto visualmente
+            const badge = clone.querySelector('.unpaid-badge');
+            if (badge) {
+                badge.classList.remove('unpaid-badge');
+                badge.classList.add('paid-badge');
+                badge.textContent = 'Pago';
+            }
+
+            // Adiciona botão de recibo
+            const btn = clone.querySelector('button');
+            btn.textContent = 'Ver Recibo';
+            btn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+            btn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            btn.innerHTML = '<i class="fas fa-receipt mr-1"></i> Ver Recibo';
+            btn.onclick = () => alert('Simulação: Exibindo recibo...');
+
+            // Move clone para seção paga
+            paidSection.prepend(clone);
+
+            // Remove da seção de contas a pagar
+            unpaidCard.remove();
+        }
+    }
+</script>
+
+<script>
+  function showPaymentForm(method) {
+    document.getElementById('form-pix').classList.add('hidden');
+    document.getElementById('form-cartao').classList.add('hidden');
+    document.getElementById('form-qrcode').classList.add('hidden');
+
+    if (method === 'pix') {
+      document.getElementById('form-pix').classList.remove('hidden');
+    } else if (method === 'cartao') {
+      document.getElementById('form-cartao').classList.remove('hidden');
+    } else if (method === 'qrcode') {
+      document.getElementById('form-qrcode').classList.remove('hidden');
+
+      // Mostra botão "Pagamento Concluído" após 5 segundos
+      document.getElementById('btn-confirm-qr').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('btn-confirm-qr').classList.remove('hidden');
+      }, 5000);
+    }
+  }
+
+  function submitPayment(method) {
+    let valid = true;
+
+    if (method === 'Pix') {
+      const chave = document.getElementById('pix-key').value.trim();
+      if (chave === '') {
+        alert('Por favor, insira a chave Pix.');
+        valid = false;
+      }
+    } else if (method === 'Cartão') {
+      const num = document.getElementById('card-number').value.trim();
+      const expiry = document.getElementById('card-expiry').value.trim();
+      const cvv = document.getElementById('card-cvv').value.trim();
+      if (!num || !expiry || !cvv) {
+        alert('Por favor, preencha todos os dados do cartão.');
+        valid = false;
+      }
+    }
+
+    if (!valid) return;
+
+    alert(`Processando pagamento via ${method}...`);
+    setTimeout(() => {
+      alert(`Pagamento via ${method} realizado com sucesso!`);
+      moveToPaidSection();
+
+      // Voltar à aba de Contas Pagas
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+      document.getElementById('paid-section').classList.remove('hidden');
+
+      document.querySelectorAll('nav a').forEach(tab => tab.classList.remove('active-tab'));
+      document.getElementById('paid-tab').classList.add('active-tab');
+    }, 1000);
+  }
+</script>
+<script>
+  // Gera código Pix aleatório ao abrir aba Pix
+  function generatePixCode() {
+    const random = Math.random().toString(36).substring(2, 15).toUpperCase();
+    const code = `00020126330014BR.GOV.BCB.PIX0114+55619999999952040000530398654041.005802BR5912SUPAG CLIENTE6014BRASILIA-DF62070503***6304${random.slice(0, 4)}`;
+    document.getElementById('pix-code').value = code;
+  }
+
+  // Copia código Pix
+  function copyPixCode() {
+    const input = document.getElementById('pix-code');
+    input.select();
+    document.execCommand("copy");
+    alert("Código Pix copiado!");
+  }
+
+  // Exibe formulário e gera código Pix se necessário
+  function showPaymentForm(method) {
+    document.getElementById('form-pix').classList.add('hidden');
+    document.getElementById('form-cartao').classList.add('hidden');
+    document.getElementById('form-qrcode').classList.add('hidden');
+
+    if (method === 'pix') {
+      document.getElementById('form-pix').classList.remove('hidden');
+      generatePixCode();
+    } else if (method === 'cartao') {
+      document.getElementById('form-cartao').classList.remove('hidden');
+    } else if (method === 'qrcode') {
+      document.getElementById('form-qrcode').classList.remove('hidden');
+      document.getElementById('btn-confirm-qr').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('btn-confirm-qr').classList.remove('hidden');
+      }, 5000);
+    }
+  }
+
+  // Aplica máscaras aos campos
+  document.getElementById('card-number').addEventListener('input', (e) => {
+    e.target.value = e.target.value
+      .replace(/\D/g, '') // remove não números
+      .replace(/(.{4})/g, '$1 ') // adiciona espaço a cada 4 dígitos
+      .trim()
+      .slice(0, 19); // limita a 19 chars com espaços
+  });
+
+  document.getElementById('card-expiry').addEventListener('input', (e) => {
+    e.target.value = e.target.value
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d{0,2})/, '$1/$2')
+      .slice(0, 5);
+  });
+
+  document.getElementById('card-cvv').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+  });
+
+  // Validações e simulação
+  function submitPayment(method) {
+    let valid = true;
+
+    if (method === 'Pix') {
+      const code = document.getElementById('pix-code').value.trim();
+      if (!code) {
+        alert('Código Pix inválido.');
+        return;
+      }
+    }
+
+    if (method === 'Cartão') {
+      const num = document.getElementById('card-number').value.trim();
+      const expiry = document.getElementById('card-expiry').value.trim();
+      const cvv = document.getElementById('card-cvv').value.trim();
+
+      if (!num || num.length < 19) {
+        alert('Número de cartão inválido.');
+        return;
+      }
+      if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+        alert('Data de validade inválida.');
+        return;
+      }
+      if (!cvv || cvv.length < 3) {
+        alert('CVV inválido.');
+        return;
+      }
+    }
+
+    alert(`Processando pagamento via ${method}...`);
+    setTimeout(() => {
+      alert(`Pagamento via ${method} realizado com sucesso!`);
+      moveToPaidSection();
+
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById('paid-section').classList.remove('hidden');
+
+      document.querySelectorAll('nav a').forEach(tab => tab.classList.remove('active-tab'));
+      document.getElementById('paid-tab').classList.add('active-tab');
+    }, 1000);
+  }
+</script>
+
+
+    
+</body>
+</html>
